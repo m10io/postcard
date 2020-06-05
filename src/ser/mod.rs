@@ -493,6 +493,10 @@ mod test {
         let x: &[u8; 32] = &[0u8; 32];
         let output: Vec<u8, U128> = to_vec(x).unwrap();
         assert_eq!(output.len(), 32);
+
+        let x: &[u8] = &[0u8; 32];
+        let output: Vec<u8, U128> = to_vec(x).unwrap();
+        assert_eq!(output.len(), 33);
     }
 
     #[derive(Serialize)]

@@ -1,4 +1,4 @@
-use serde::{Serialize, Serializer};
+use serde::ser::{Serialize, Serializer, SerializeTuple};
 
 /// A wrapper type that exists as a `usize` at rest, but is serialized
 /// to or deserialized from a varint.
@@ -12,7 +12,11 @@ impl Serialize for VarintUsize {
     {
         let mut buf = Self::new_buf();
         let used_buf = self.to_buf(&mut buf);
-        serializer.serialize_bytes(used_buf)
+        let mut tup = serializer.serialize_tuple(used_buf.len())?;
+        for byte in used_buf {
+            tup.serialize_element(byte)?;
+        }
+        tup.end()
     }
 }
 
